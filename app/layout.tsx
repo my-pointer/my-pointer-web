@@ -18,7 +18,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`container mx-auto ${prompt.className}`}>
 				<section className="my-5 space-y-4">
-					<h1 className="text-3xl text-violet-600 font-bold">My Pointer</h1>
+					<h1 className="text-3xl text-orange-600 font-bold">My Pointer</h1>
 					<hr />
 					<main>{children}</main>
 				</section>
