@@ -1,13 +1,34 @@
+"use client";
+
+import { useEffect } from "react";
 import CreditCard from "./components/CreditCard";
 import UserPoint from "./components/UserPoint";
+import useAuth from "./hooks/useAuth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import useUser from "./hooks/useUser";
+import LogoutBoxRFillIcon from "remixicon-react/LogoutBoxRFillIcon";
 
 export default function Home() {
+	const { userData } = useUser();
+	const router = useRouter();
+	const { handleLogout } = useAuth();
+	useEffect(() => {
+		if (userData === null) {
+			router.push("/login");
+		}
+	}, []);
 	return (
 		<main>
-			<section className="flex w-full justify-between mt-20">
+			<div className="flex justify-end">
+				<Link href="/" onClick={handleLogout} className="flex hover:text-orange-700 mt-4">
+					<LogoutBoxRFillIcon /> ออกจากระบบ
+				</Link>
+			</div>
+			<section className="flex w-full justify-between mt-10">
 				<div>
 					<h1 className="text-4xl">
-						สวัสดี <span className="text-6xl font-bold capitalize">Lorem</span>
+						สวัสดี <span className="text-6xl font-bold capitalize">{userData?.username}</span>
 					</h1>
 
 					<div className="mt-5 space-x-4">
