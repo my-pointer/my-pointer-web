@@ -9,6 +9,7 @@ const useCredit = ({ userId }: ICreditHook) => {
 	const [creditIsLoading, setCreditIsLoading] = useState<boolean>(true);
 	const [userCredit, setUserCredit] = useState({} as IUserCredit);
 	const [userBalance, setUserBalance] = useState({} as IUserBalance);
+	const [reloadBalance, setReloadBalance] = useState<boolean>(false);
 
 	const getUserCredit = async (userId: number) => {
 		setCreditIsLoading(true);
@@ -31,11 +32,19 @@ const useCredit = ({ userId }: ICreditHook) => {
 		setCreditIsLoading(false);
 	};
 
+	const handleTriggerReload = (value: boolean) => {
+		setReloadBalance(value);
+	};
+
 	useEffect(() => {
 		getUserCredit(userId!);
 	}, []);
 
-	return { userCredit, creditIsLoading, userBalance };
+	useEffect(() => {
+		getUserCredit(userId!);
+	}, [reloadBalance]);
+
+	return { userCredit, creditIsLoading, userBalance, handleTriggerReload };
 };
 
 export default useCredit;

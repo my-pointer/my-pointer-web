@@ -10,18 +10,25 @@ import useUser from "./hooks/useUser";
 import LogoutBoxRFillIcon from "remixicon-react/LogoutBoxRFillIcon";
 import useCredit from "./hooks/useCredit";
 import Loading from "./components/Loading";
+import PayCard from "./components/PayCard";
 
 export default function Home() {
 	const { userData } = useUser();
 	const router = useRouter();
 	const { handleLogout } = useAuth();
-	const { userCredit, creditIsLoading, userBalance } = useCredit({ userId: userData!.id });
+	const { userCredit, creditIsLoading, userBalance, handleTriggerReload } = useCredit({ userId: userData!.id });
+	const [isShowPayCard, setIsShowPayCard] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (userData === null) {
 			router.push("/login");
 		}
 	}, []);
+
+	const handlePayCard = (isShow: boolean) => {
+		setIsShowPayCard(isShow);
+		handleTriggerReload(isShow);
+	};
 	return (
 		<main>
 			{creditIsLoading ? (
@@ -50,12 +57,14 @@ export default function Home() {
 								<button
 									type="button"
 									className="border border-orange-500 bg-orange-500 text-white min-w-[200px] px-10 py-3 rounded-full text-center hover:text-white hover:bg-orange-600 hover:border-orange-300"
+									onClick={() => handlePayCard(true)}
 								>
 									<span>จ่าย</span>
 								</button>
 							</div>
 						</div>
 						<CreditCard cardNumber={userCredit.cardNumber} cardHolderName={userCredit.cardHolderName} />
+						{isShowPayCard && <PayCard handleClose={handlePayCard} />}
 					</section>
 
 					<section>
