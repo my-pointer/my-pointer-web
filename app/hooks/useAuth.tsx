@@ -3,6 +3,7 @@ export default function useAuth() {
 		localStorage.removeItem("accessToken");
 		window.location.href = "/login";
 	};
+
 	return { handleLogout };
 }
 

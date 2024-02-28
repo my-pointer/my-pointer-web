@@ -5,7 +5,7 @@ export default function useUser() {
 	const accessToken = localStorage.getItem("accessToken");
 
 	if (accessToken !== null) {
-		const userData: IUser = jwtDecode(accessToken);
+		const userData: IUser = jwtDecode(accessToken as string);
 		return { userData };
 	} else {
 		return { userData: null };
