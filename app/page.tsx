@@ -11,6 +11,7 @@ import LogoutBoxRFillIcon from "remixicon-react/LogoutBoxRFillIcon";
 import useCredit from "./hooks/useCredit";
 import Loading from "./components/Loading";
 import PayCard from "./components/PayCard";
+import ExChangeCard from "./components/ExchangeCard";
 
 export default function Home() {
 	const { userData } = useUser();
@@ -18,6 +19,7 @@ export default function Home() {
 	const { handleLogout } = useAuth();
 	const { userCredit, creditIsLoading, userBalance, handleTriggerReload } = useCredit({ userId: userData!.id });
 	const [isShowPayCard, setIsShowPayCard] = useState<boolean>(false);
+	const [isShowExchangeCard, setIsShowExchangeCard] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (userData === null) {
@@ -28,6 +30,13 @@ export default function Home() {
 	const handlePayCard = (isShow: boolean) => {
 		setIsShowPayCard(isShow);
 		handleTriggerReload(isShow);
+		setIsShowExchangeCard(false);
+	};
+
+	const handleExchangeCard = (isShow: boolean) => {
+		setIsShowExchangeCard(isShow);
+		handleTriggerReload(isShow);
+		setIsShowPayCard(false);
 	};
 	return (
 		<main>
@@ -50,6 +59,7 @@ export default function Home() {
 								<button
 									type="button"
 									className="border border-gray-600 min-w-[200px] px-10 py-3 rounded-full text-center hover:bg-gray-600 hover:text-white"
+									onClick={() => handleExchangeCard(true)}
 								>
 									<span>แลกแต้ม</span>
 								</button>
@@ -65,6 +75,7 @@ export default function Home() {
 						</div>
 						<CreditCard cardNumber={userCredit.cardNumber} cardHolderName={userCredit.cardHolderName} />
 						{isShowPayCard && <PayCard handleClose={handlePayCard} />}
+						{isShowExchangeCard && <ExChangeCard credit={userCredit.point} handleClose={handleExchangeCard} />}
 					</section>
 
 					<section>
